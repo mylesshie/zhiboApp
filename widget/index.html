@@ -7,82 +7,193 @@
     <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
     <title>Hello APP</title>
     <link rel="stylesheet" type="text/css" href="./css/api.css" />
-    <style type="text/css">
-        html,
-        body {
-            height: 100%;
-        }
-
-        .wrap {
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-flex-flow: column;
-        }
-
-        header {
-            height: 44px;
-            width: 100%;
-            text-align: center;
-            background-color: #81a9c3;
-            color: #fff;
-            line-height: 44px;
-            font-size: 20px;
-        }
-
-        .flex-1 {
-            -webkit-box-flex: 1;
-            -webkit-flex: 1;
-        }
-
-        footer {
-            height: 30px;
-            width: 100%;
-            background-color: #81a9c3;
-            color: white;
-            line-height: 30px;
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="./css/main.css">
 </head>
 
 <body class="wrap">
-    <header>APICloud123</header>
-    <section class="flex-1">
-
-    </section>
-    <footer>Copyright &copy;<span id="year"></span></footer>
+    <header>header</header>
+    <nav id="nav">11123</nav>
+    <div class="button" id="btn">打开</div>
+    <div class="button" onClick="openInput()">打开输入框</div>
 </body>
 <script type="text/javascript" src="./script/api.js"></script>
+<script type="text/javascript" src="./script/doT.min.js"></script>
 <script type="text/javascript">
     apiready = function() {
-        //输出Log，Log将显示在APICloud Studio控制台
         console.log("Hello World! Hello APICloud!");
 
         var header = $api.dom('header'); // 获取 header 标签元素
         var footer = $api.dom('footer'); // 获取 footer 标签元素
+        $api.fixStatusBar(header);
+
+        openFooter()
+
+        $api.addEvt($api.dom('#btn'), 'click', function() {
+          api.openPicker({
+              type: 'date_time',
+              date: '2014-05-01 12:30',
+              title: '选择时间'
+          }, function(ret, err){
+              if( ret ){
+                   alert( JSON.stringify( ret ) );
+              }else{
+                   alert( JSON.stringify( err ) );
+              }
+          });
+        })
+
+        //弹出状态栏通知
+        // api.notification({
+        //     notify: {
+        //     title: '通知标题',
+        //         content: '通知内容'
+        //     }
+        // });
+        // api.setStatusBarStyle({
+        //   style: 'light',
+        //   color: '#000'
+        // })
+        // api.actionSheet({
+        //     title: '底部弹出框测试',
+        //     cancelTitle: '这里是取消按钮',
+        //     destructiveTitle: '红色警告按钮',
+        //     buttons: ['1', '2', '3']
+        // }, function(ret, err) {
+        //     var index = ret.buttonIndex;
+        //     api.alert({
+        //       title: '选择的按钮',
+        //       msg: index
+        //     })
+        // });
+        // api.openPicker({
+        //     type: 'date_time',
+        //     date: '2014-05-01 12:30',
+        //     title: '选择时间'
+        // }, function(ret, err){
+        //     if( ret ){
+        //          alert( JSON.stringify( ret ) );
+        //     }else{
+        //          alert( JSON.stringify( err ) );
+        //     }
+        // });
+
+        api.showFloatBox({
+            iconPath: '../image/loading_more.gif',
+            duration: 3000
+        });
+
+        // api.getPicture({
+        //     sourceType: 'camera',
+        //     encodingType: 'jpg',
+        //     mediaValue: 'pic',
+        //     destinationType: 'url',
+        //     allowEdit: true,
+        //     quality: 50,
+        //     targetWidth: 100,
+        //     targetHeight: 100,
+        //     saveToPhotoAlbum: false
+        // }, function(ret, err){
+        //     if(ret){
+        //          alert(JSON.stringify(ret));
+        //     }else{
+        //          alert(JSON.stringify(err));
+        //     }
+        // });
+
+
+        // api.openDrawerLayout({
+        //     name: 'main',
+        //     url: './html/main.html',
+        //     leftPane: {
+        //       name: 'leftPane',
+        //       edge: 100,
+        //       url: './html/leftPane.html'
+        //     },
+        //     rightPane: {
+        //       name: 'rightPane',
+        //       url: './html/rightPane.html'
+        //     }
+        // });
+
+        api.addEventListener({
+            name:'shake'
+        }, function(ret, err){
+           alert('触发了摇一摇事件');
+        });
+
+        // api.openWin({
+        //   name: 'baidu',
+        //   url: 'http://www.baidu.com',
+        //   useWKWebView: true,
+        //   progress: {
+        //     type: ''
+        //   }
+        // })
 
         // 1.修复开启沉浸式效果带来的顶部Header与手机状态栏重合的问题，最新api.js方法已支持适配iPhoneX；
         // 2.默认已开启了沉浸式效果 config.xml中 <preference name="statusBarAppearance" value="true"/>
         // 3.沉浸式效果适配支持iOS7+，Android4.4+以上版本
-        var headerH = $api.fixStatusBar(header);
+        // var headerH = $api.fixStatusBar(header);
         // 最新api.js为了适配iPhoneX增加的方法，修复底部Footer部分与iPhoneX的底部虚拟横条键重叠的问题；
-        var footerH = $api.fixTabBar(footer);
+        // var footerH = $api.fixTabBar(footer);
 
-        api.openFrame({
-            name: 'main',
-            url: 'html/main.html',
-            bounces: true,
-            rect: { // 推荐使用Margin布局，用于适配屏幕的动态变化
-                marginTop: headerH, // main页面距离win顶部的高度
-                marginBottom: footerH, // main页面距离win底部的高度
-                w: 'auto' // main页面的宽度 自适应屏幕宽度
-            }
-        });
+        // api.openFrame({
+        //     name: 'main',
+        //     url: 'html/main.html',
+        //     bounces: true,
+        //     rect: { // 推荐使用Margin布局，用于适配屏幕的动态变化
+        //         marginTop: headerH, // main页面距离win顶部的高度
+        //         // marginBottom: footerH, // main页面距离win底部的高度
+        //         w: 'auto' // main页面的宽度 自适应屏幕宽度
+        //     }
+        // });
 
         // 获取当前年份时间，并加载显示到页面
-        var year = $api.byId('year');
-        year.innerHTML = new Date().getFullYear();
     };
+
+    function openInput() {
+      let UIInput = api.require("UIInput")
+      UIInput.open({
+        rect: {
+          x: 10,
+          y: 50,
+          w: 100,
+          h: 30
+        },
+        styles: {
+          bgColor: 'rgba(0, 0, 0, 0.2)',
+          color: '#000'
+        }
+      }, function(ret) {
+        console.log(ret.id)
+        UIInput.value({
+          id: ret.id
+        }, function(ret) {
+          console.log(ret.msg)
+        })
+      })
+    }
+
+    function openFooter() {
+      api.openFrame({
+          name: 'footer',
+          url: './html/templates/footer.html',
+          rect: {
+              x: 0,
+              y: api.winHeight - 40,
+              w: 'auto',
+              h: 40
+          },
+          pageParam: {
+              name: 'test'
+          },
+          bounces: false,
+          bgColor: 'rgba(0, 0, 0, 0)',
+          vScrollBarEnabled: false,
+          hScrollBarEnabled: false
+      });
+
+    }
 
 </script>
 

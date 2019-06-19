@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>Hello APP</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css" />
+    <style media="screen">
+      .top-header {
+        margin-top: 40px;
+        padding: 10px 10px;
+        height: 40px;
+        position: relative;
+      }
+      .top-header .title {
+        font-size: 20px;
+        font-weight: bold;
+      }
+      .top-header .mini {
+        font-size: 12px;
+        color: #ccc;
+        margin-left: 10px;
+      }
+      .top-header .over-btn {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 40px;
+        height: 20px;
+        line-height: 20px;
+        color: red;
+        border: 1px solid red;
+        border-radius: 10px;
+        text-align: center;
+        font-size: 12px;
+      }
+      .main-wrap {
+        margin-top: 10px;
+        padding: 0 10px;
+      }
+      .tab-li {
+        display: inline-block;
+        width: 87px;
+        height: 40px;
+        line-height: 40px;
+        background: #eee;
+        border-radius: 2px;
+        color: #999;
+        position: relative;
+        margin: 10px 10px 0 0;
+        font-size: 14px;
+        text-align: center;
+      }
+      .tab-li:nth-of-type(4n+4) {
+        margin-right: 0;
+      }
+      .tab-li .close-btn {
+        width: 20px;
+        height: 20px;
+        border-radius: 10px;
+        background: #ccc;
+        position: absolute;
+        right: -10px;
+        top: -10px;
+        z-index: 1;
+      }
+    </style>
+</head>
+<body class="wrap">
+  <div class="top-header">
+    <div class="title">我的频道<span class="mini">拖动可以排序</span></div>
+    <div class="over-btn" onclick="postAll()">完成</div>
+  </div>
+  <div class="main-wrap" id="choosedBox">
+    <div class="tab-li">
+      <div class="name">我的</div>
+      <div class="close-btn"></div>
+    </div>
+    <div class="tab-li">
+      <div class="name">我的</div>
+      <div class="close-btn"></div>
+    </div>
+    <div class="tab-li">
+      <div class="name">我的</div>
+      <div class="close-btn"></div>
+    </div>
+    <div class="tab-li">
+      <div class="name">我的</div>
+      <div class="close-btn"></div>
+    </div>
+    <div class="tab-li">
+      <div class="name">我的</div>
+      <div class="close-btn"></div>
+    </div>
+    <div class="tab-li">
+      <div class="name">我的</div>
+      <div class="close-btn"></div>
+    </div>
+  </div>
+  <div class="top-header">
+    <div class="title">频道推荐<span class="mini">点击添加频道</span></div>
+  </div>
+  <div class="main-wrap" id="allBox">
+    <div class="tab-li">
+      <div class="name">+我的</div>
+      <div class="close-btn"></div>
+    </div>
+  </div>
+</body>
+<script type="text/javascript" src="./script/api.js"></script>
+<script type="text/javascript">
+  apiready = function() {
+    let active = []
+    let all = ['关注', '推荐', '科技', '军事', '背景', '视频', '体育']
+
+    initAll(all)
+
+  }
+  // 渲染所有选项
+  function initAll(ary) {
+    let str = ''
+    for (let i = 0; i < ary.length; i ++) {
+      str += '<div class="tab-li">' +
+            '<div class="name">+' + ary[i] + '</div>' +
+            '<div class="close-btn"></div>'
+    }
+    alert($api.byId('allBox').html());
+    // $api.byId('allBox').html(str);
+  }
+
+  function postAll() {
+    api.ajax({
+      url: 'http://text.com',
+      method: 'POST',
+      dataType: 'json',
+      data: {
+        userId: '1',
+        tags: []
+      }
+    }, function(res) {
+      cosnole.log(res)
+    })
+  }
+</script>
+</html>
